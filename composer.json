@@ -1,0 +1,29 @@
+{
+    "name": "krakero/tailwind-fieldtype",
+    "autoload": {
+        "psr-4": {
+            "Krakero\\TailwindFieldtype\\": "src"
+        }
+    },
+    "extra": {
+        "statamic": {
+            "name": "Tailwind Fieldtype",
+            "description": "Tailwind Fieldtype addon"
+        },
+        "laravel": {
+            "providers": [
+                "Krakero\\TailwindFieldtype\\ServiceProvider"
+            ]
+        }
+    },
+    "require": {
+        "illuminate/support": "^10.15",
+        "illuminate/console": "^10.15",
+        "statamic/cms": "^4.12"
+    },
+    "config": {
+        "allow-plugins": {
+            "pixelfear/composer-dist-plugin": true
+        }
+    }
+}

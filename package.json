@@ -1,0 +1,17 @@
+{
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue2": "^2.2.0",
+    "laravel-vite-plugin": "^0.7.2",
+    "vite": "^4.0.0"
+  },
+  "dependencies": {
+    "@vendeka/tailwind-config-php": "^1.1.0",
+    "inputmask": "^5.0.8",
+    "vue": "^2.7.14"
+  }
+}
