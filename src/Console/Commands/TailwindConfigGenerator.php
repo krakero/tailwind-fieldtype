@@ -12,7 +12,7 @@ class TailwindConfigGenerator extends Command
      *
      * @var string
      */
-    protected $signature = 'kit:tailwind-config';
+    protected $signature = 'krakero:tailwind-config';
 
     /**
      * The console command description.
