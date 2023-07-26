@@ -17,9 +17,7 @@
         }
     },
     "require": {
-        "illuminate/support": "^10.15",
-        "illuminate/console": "^10.15",
-        "statamic/cms": "^4.12"
+        "statamic/cms": "^4.0"
     },
     "config": {
         "allow-plugins": {

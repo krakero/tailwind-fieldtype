@@ -7,16 +7,19 @@ use Illuminate\Support\Facades\File;
 
 class TailwindPicker extends Fieldtype
 {
+    protected $color_names;
     protected $colors;
     protected $missing_file;
+    protected $tailwind_colors;
+    protected $tailwind_config;
 
     public function __construct()
     {
-        if (File::exists(__DIR__ . '/../../tailwind.config.php')) {
-            $config = require __DIR__ . '/../../tailwind.config.php';
-            $this->colors = $config->theme->colors;
-        } else {
-            $this->missing_file = true;
+        $this->loadTailwindConfig();
+        if ($this->tailwind_config) {
+            $this->setTailwindColors();
+            $this->setColorMap();
+            $this->color_names = collect($this->tailwind_colors)->keys()->toArray();
         }
     }
 
@@ -33,7 +36,7 @@ class TailwindPicker extends Fieldtype
     /**
      * Pre-process the data before it gets sent to the publish page.
      *
-     * @param mixed $data
+     * @param  mixed  $data
      * @return array|mixed
      */
     public function preProcess($data)
@@ -44,7 +47,7 @@ class TailwindPicker extends Fieldtype
     /**
      * Process the data before it gets saved.
      *
-     * @param mixed $data
+     * @param  mixed  $data
      * @return array|mixed
      */
     public function process($data)
@@ -60,16 +63,6 @@ class TailwindPicker extends Fieldtype
         ];
     }
 
-    public function getColors()
-    {
-        if ($this->missing_file) {
-            return [];
-        }
-
-        return collect(array_keys(get_object_vars($this->colors)))->filter(function ($color) {
-            return $color <> 'current';
-        })->values();
-    }
 
     protected function configFieldItems(): array
     {
@@ -80,7 +73,7 @@ class TailwindPicker extends Fieldtype
                 'placeholder' => 'Select Colors',
                 'type' => 'select',
                 'multiple' => true,
-                'options' => $this->getColors(),
+                'options' => $this->color_names,
             ],
             'mode' => [
                 'type' => 'button_group',
@@ -108,5 +101,28 @@ class TailwindPicker extends Fieldtype
                 'default' => '',
             ],
         ];
+    }
+
+    protected function setTailwindColors()
+    {
+        $this->tailwind_colors = $this->tailwind_config->theme->colors;
+    }
+
+    private function loadTailwindConfig()
+    {
+        if (File::exists(__DIR__.'/../../tailwind.config.php')) {
+            $this->tailwind_config = require __DIR__.'/../../tailwind.config.php';
+            $this->missing_file = false;
+        } else {
+            $this->tailwind_config = false;
+            $this->missing_file = true;
+        }
+    }
+
+    protected function setColorMap()
+    {
+        $this->colors = collect($this->tailwind_colors)->map(function ($color, $name) {
+            return collect($color)->toArray();
+        });
     }
 }

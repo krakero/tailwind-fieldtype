@@ -20,7 +20,7 @@ export default {
       return this.active.color === this.color.color && this.active.weight === this.color.weight;
     },
     title() {
-      if (this.color.weight == null) {
+      if (this.color.weight === null) {
         return this.color.color;
       }
 
