@@ -21,11 +21,7 @@ class ServiceProvider extends AddonServiceProvider
 
     public function bootAddon()
     {
-//        if (File::exists(__DIR__.'/../../tailwind.config.php')) {
-            TailwindPicker::register();
-//        } else {
-//            Toast::error('No Tailwind Config Found run `kit:tailwind-config`');
-//        }
+        TailwindPicker::register();
 
         $this->commands([
             TailwindConfigGenerator::class,
