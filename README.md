@@ -21,5 +21,6 @@ composer require krakero/tailwind-fieldtype
 
 Once you install the addon you will need to run `krakero:tailwind-config`. This command will look for the `tailwind.config.js` file located in your project root and generate a version for the fieldtype.
 
-> **NOTE:** If you make changes to your config file you will need to run this command again.
-
+> **NOTES:**
+> - If you make changes to your config file you will need to run this command again.
+> - This package needs to run `npm install` in it's directory to be able to convert the config file
