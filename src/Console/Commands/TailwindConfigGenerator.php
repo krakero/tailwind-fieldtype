@@ -27,6 +27,14 @@ class TailwindConfigGenerator extends Command
     public function handle()
     {
         if (File::exists(base_path('tailwind.config.js'))) {
+            try {
+                exec('cd ' . __DIR__ . '/../../.. && npm install');
+            } catch (\Exception $e) {
+                $this->error('NPM Install failure');
+
+                return self::FAILURE;
+            }
+
             $this->info('Config file found, processing to PHP');
             $path_to_library = __DIR__ . '/../../../node_modules/@vendeka/tailwind-config-php/index.js';
             $path_to_config =  __DIR__ . '/../../../tailwind.config.php';
