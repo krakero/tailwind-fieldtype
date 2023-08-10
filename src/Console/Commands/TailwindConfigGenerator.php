@@ -39,7 +39,7 @@ class TailwindConfigGenerator extends Command
 
             $this->info('Converting tailwind config to PHP...');
             $path_to_library = __DIR__ . '/../../../node_modules/@vendeka/tailwind-config-php/index.js';
-            $path_to_config =  __DIR__ . '/../../../tailwind.config.php';
+            $path_to_config =  base_path('tailwind.config.php');
 
             if (File::exists($path_to_library)) {
                 $cmd = $path_to_library . ' -o ' . $path_to_config;

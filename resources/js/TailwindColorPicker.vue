@@ -2,7 +2,7 @@
 
   <div class="text-sm">
     <div v-if="meta.missing_file" class="text-red-500">
-      Tailwind config file not found. Did you run <code>php artisan kit:tailwind-config</code>?
+      Tailwind config file not found. Did you run <code>php artisan krakero:tailwind-config</code>?
     </div>
     <div v-else class="flex items-center mb-2" v-for="color in config.available_colors" :key="color">
       <div class="w-24 text-right px-4">{{ color }}</div>
