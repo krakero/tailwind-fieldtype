@@ -110,7 +110,7 @@ class TailwindPicker extends Fieldtype
 
     private function loadTailwindConfig()
     {
-        if (File::exists(__DIR__.'/../../tailwind.config.php')) {
+        if (File::exists(base_path('tailwind.config.php'))) {
             $this->tailwind_config = require base_path('tailwind.config.php');
             $this->missing_file = false;
         } else {

@@ -54,12 +54,12 @@ export default {
   mounted() {
     if (this.value) {
       let parts = this.value.split('-');
-      if (parts.length == 2) {
+      if (parts.length === 2) {
         this.selected.color = parts[0];
         this.selected.weight = parts[1];
       }
 
-      if (parts.length == 3) {
+      if (parts.length === 3) {
         this.selected.color = parts[1];
         this.selected.weight = parts[2];
       }
