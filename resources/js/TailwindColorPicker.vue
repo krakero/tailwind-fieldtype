@@ -1,7 +1,7 @@
 <template>
     <div class="text-sm">
         <div v-if="meta.missing_file" class="text-red-500">Tailwind config file not found. Did you run <code>php artisan krakero:tailwind-config</code>?</div>
-        <popover ref="popper" :disabled="disabled" placement="bottom-start" :autoclose="autoclose" @opened="$emit('opened')" @closed="$emit('closed')">
+        <popover :ref="'popper_' + id" :disabled="disabled" placement="bottom-start" :autoclose="autoclose" @opened="$emit('opened')" @closed="$emit('closed')">
             <template #trigger>
                 <slot name="trigger">
                     <button v-tooltip="__('Switch Color')" v-if="selected && selected.color" class="h-8 w-8 rounded-md border m-1" :style="`background-color: ${activeColorHex};`"></button>
@@ -60,6 +60,7 @@ export default {
                 color: null,
                 weight: null,
             },
+            id: (Math.random() + 1).toString(36).substring(7),
         };
     },
     mounted() {
@@ -108,10 +109,8 @@ export default {
                 className += "-" + weight;
             }
 
-            console.log(className);
-
             this.$emit("input", className);
-            this.$refs.popper.close();
+            this.$refs["popper_" + this.id].close();
         },
     },
     components: {
