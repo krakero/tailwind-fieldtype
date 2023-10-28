@@ -65,7 +65,12 @@ export default {
     },
     mounted() {
         if (this.value) {
-            let parts = this.value.split("-");
+            let parts = this.value.replace(this.config.class_prefix + "-", "").split("-");
+
+            if (parts.length === 1) {
+                this.selected.color = parts[0];
+            }
+
             if (parts.length === 2) {
                 this.selected.color = parts[0];
                 this.selected.weight = parts[1];
@@ -86,7 +91,7 @@ export default {
         },
         activeColorHex() {
             if (this.selected.color) {
-                return this.colors[this.selected.color][this.selected.weight];
+                return this.colors[this.selected.color][this.selected.weight ?? 0];
             }
         },
     },
