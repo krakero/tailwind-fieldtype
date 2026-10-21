@@ -8,23 +8,19 @@
         </div>
 
         <!-- Color Picker Popover -->
-        <Popover>
+        <Popover align="start" inset class="tailwind-color-picker-popover">
             <template #trigger>
-                <Button
+                <button
+                    type="button"
                     :disabled="isReadOnly"
-                    variant="default"
-                    class="h-9 px-2 justify-start gap-2"
+                    class="h-8 w-8 rounded-md border border-gray-300 dark:border-gray-600 flex flex-shrink-0 items-center justify-center cursor-pointer transition-colors hover:border-gray-400 dark:hover:border-gray-500 disabled:cursor-not-allowed disabled:opacity-50"
+                    :class="{ 'checkerboard': selectedName === 'transparent' }"
+                    :style="swatchStyle"
+                    :title="triggerLabel"
+                    :aria-label="triggerLabel"
                 >
-                    <!-- Swatch -->
-                    <div
-                        v-if="selectedName"
-                        class="h-5 w-5 rounded border border-gray-300 dark:border-gray-600 flex-shrink-0"
-                        :class="{ 'checkerboard': selectedName === 'transparent' }"
-                        :style="swatchStyle"
-                        :aria-label="selectedLabel"
-                    ></div>
                     <svg
-                        v-else
+                        v-if="!selectedName"
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"
@@ -35,35 +31,20 @@
                     >
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                     </svg>
-
-                    <!-- Label -->
-                    <span v-if="selectedName" class="text-sm">{{ selectedLabel }}</span>
-                    <span v-else class="text-sm text-gray-500 dark:text-gray-400">Select a color</span>
-                </Button>
+                </button>
             </template>
 
             <template #default="{ close }">
-                <div class="p-4 max-h-96 overflow-y-auto w-80">
-                    <!-- Clear button -->
-                    <div v-if="selectedName" class="mb-3 pb-3 border-b border-gray-200 dark:border-gray-700">
-                        <Button @click="clearColor(close)" variant="ghost" size="sm" class="w-full justify-start">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-4 w-4 mr-2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                            Clear
-                        </Button>
-                    </div>
-
-                    <!-- Color grid -->
-                    <div class="space-y-3">
-                        <div v-for="colorName in availableColorNames" :key="colorName" class="space-y-1">
+                <div class="picker-content p-3 overflow-y-auto">
+                    <div class="grid grid-cols-[auto_1fr] items-center gap-x-3 gap-y-1.5">
+                        <template v-for="colorName in availableColorNames" :key="colorName">
                             <!-- Color name label -->
-                            <div class="text-xs font-medium text-gray-600 dark:text-gray-400 capitalize">
+                            <div class="text-xs text-right text-gray-500 dark:text-gray-400 whitespace-nowrap">
                                 {{ colorName }}
                             </div>
 
                             <!-- Advanced mode: show all shades -->
-                            <div v-if="mode === 'advanced'" class="flex flex-wrap gap-1">
+                            <div v-if="mode === 'advanced'" class="flex gap-1.5">
                                 <template v-if="isFlatColor(colorName)">
                                     <ColorSwatch
                                         :name="colorName"
@@ -87,7 +68,7 @@
                             </div>
 
                             <!-- Simple mode: show only default shade -->
-                            <div v-else class="flex flex-wrap gap-1">
+                            <div v-else class="flex gap-1.5">
                                 <ColorSwatch
                                     :name="colorName"
                                     :shade="getSimpleModeShade(colorName)"
@@ -96,7 +77,22 @@
                                     @select="selectColor(colorName, getSimpleModeShade(colorName), close)"
                                 />
                             </div>
-                        </div>
+                        </template>
+
+                        <!-- Clear button -->
+                        <template v-if="selectedName">
+                            <div></div>
+                            <button
+                                type="button"
+                                class="flex items-center gap-1 justify-self-start text-xs text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 cursor-pointer"
+                                @click="clearColor(close)"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-3.5 w-3.5" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                                Clear
+                            </button>
+                        </template>
                     </div>
                 </div>
             </template>
@@ -107,7 +103,7 @@
 <script setup>
 import { computed, ref, watch } from 'vue';
 import { Fieldtype } from '@statamic/cms';
-import { Popover, Button } from '@statamic/cms/ui';
+import { Popover } from '@statamic/cms/ui';
 import { parseColorValue, formatColorValue, getColorCssValue, getDefaultShade } from '../color-value.js';
 import ColorSwatch from './ColorSwatch.vue';
 
@@ -153,6 +149,8 @@ const selectedLabel = computed(() => {
     }
     return selectedName.value;
 });
+
+const triggerLabel = computed(() => selectedLabel.value || 'Pick Color');
 
 const swatchStyle = computed(() => {
     if (!selectedName.value) {
@@ -222,21 +220,42 @@ watch(() => props.value, (newValue) => {
 </script>
 
 <style scoped>
+.picker-content {
+    max-height: min(24rem, 60vh);
+    overflow: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #9ca3af transparent;
+}
+
+.dark .picker-content {
+    scrollbar-color: #6b7280 transparent;
+}
+
 .checkerboard {
     background-image:
+        linear-gradient(to bottom right, transparent calc(50% - 1px), #ef4444 calc(50% - 1px), #ef4444 calc(50% + 1px), transparent calc(50% + 1px)),
         linear-gradient(45deg, #ccc 25%, transparent 25%),
         linear-gradient(-45deg, #ccc 25%, transparent 25%),
         linear-gradient(45deg, transparent 75%, #ccc 75%),
         linear-gradient(-45deg, transparent 75%, #ccc 75%);
-    background-size: 8px 8px;
-    background-position: 0 0, 0 4px, 4px -4px, -4px 0px;
+    background-size: 100% 100%, 8px 8px, 8px 8px, 8px 8px, 8px 8px;
+    background-position: 0 0, 0 0, 0 4px, 4px -4px, -4px 0px;
 }
 
 .dark .checkerboard {
     background-image:
+        linear-gradient(to bottom right, transparent calc(50% - 1px), #f87171 calc(50% - 1px), #f87171 calc(50% + 1px), transparent calc(50% + 1px)),
         linear-gradient(45deg, #555 25%, transparent 25%),
         linear-gradient(-45deg, #555 25%, transparent 25%),
         linear-gradient(45deg, transparent 75%, #555 75%),
         linear-gradient(-45deg, transparent 75%, #555 75%);
+}
+</style>
+
+<style>
+/* Statamic's Popover content is fixed at w-64; let it fit a full row of swatches. */
+.tailwind-color-picker-popover {
+    width: max-content !important;
+    max-width: calc(100vw - 2rem) !important;
 }
 </style>

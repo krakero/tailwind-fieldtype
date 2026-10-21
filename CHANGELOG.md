@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Colors are now discovered from `@theme` blocks in CSS files instead of `tailwind.config.js`
 - Updated to use Statamic's native UI components (`ui-popover`)
 - Swatches now render CSS color values directly (supports OKLCH)
+- Picker UI keeps the v2 layout in Statamic 6: a single swatch trigger (tooltip shows the value, X icon when empty) opening a popover with right-aligned color names beside one row of rounded swatches per color, and Clear at the bottom
 
 ### Fixed
 - Multi-segment class prefix parsing (e.g., `border-t-red-500`)
@@ -34,6 +35,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Flat color hex value lookup
 - `transparent` keyword not working in advanced mode
 - Dark mode color swatch rendering
+- `transparent` now shows a checkerboard swatch with a red diagonal slash instead of a plain white box (#4)
 
 ### Removed
 - **BREAKING:** `tailwind.config.php` generation and usage

@@ -163,6 +163,8 @@ border-t-blue-600
 transparent
 ```
 
+The special keywords `transparent`, `current`, and `inherit` are always available in the picker. `transparent` is shown as a checkerboard swatch with a red diagonal slash so it is distinguishable from white; `current` renders as the current text color (`currentColor`), and `inherit` as an inherited value.
+
 This format means **no content migration** is needed when upgrading from version 2.x.
 
 ## Template Usage
@@ -246,6 +248,7 @@ The command exits with a non-zero status code if no colors are found (besides th
 
 ## Features
 
+- ✅ **Familiar UI** - A single swatch field (hover for the value) opens a popover with a labelled row of swatches per color and a Clear option
 - ✅ **Advanced mode** - All color shades in a visual picker
 - ✅ **Simple mode** - Single shade selection (perfect for brand colors)
 - ✅ **Class prefixes** - `bg`, `text`, `border`, `border-t`, etc.
