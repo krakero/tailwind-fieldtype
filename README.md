@@ -1,5 +1,8 @@
 # Statamic Tailwind Fieldtype
 
+> **3.0 is in beta.** It adds Statamic 6 and Tailwind CSS 4 support.
+> Using Statamic 4 or 5? Install the stable 2.x release (see [Installation](#installation)).
+
 A Tailwind CSS color picker fieldtype for Statamic 6. Select colors from your Tailwind theme and save them as CSS class names ready to use in your templates.
 
 ## Requirements
@@ -12,13 +15,19 @@ A Tailwind CSS color picker fieldtype for Statamic 6. Select colors from your Ta
 
 ## Installation
 
-Install via Composer:
+**Statamic 6 (3.0 beta):**
 
 ```bash
-composer require krakero/tailwind-fieldtype
+composer require krakero/tailwind-fieldtype:^3.0@beta
 ```
 
-Or search for "Tailwind Fieldtype" in the Statamic Control Panel under **Tools → Addons** and click **Install**.
+**Statamic 4/5 (stable 2.x):**
+
+```bash
+composer require krakero/tailwind-fieldtype:^2.1
+```
+
+Until 3.0.0 is released, install on Statamic 6 with Composer rather than the Control Panel's **Tools → Addons** page.
 
 ## Color Discovery
 
