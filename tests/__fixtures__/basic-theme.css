@@ -1,0 +1,7 @@
+@theme {
+  --color-red-50: oklch(0.97 0.013 17.38);
+  --color-red-500: oklch(0.637 0.237 25.331);
+  --color-red-950: oklch(0.318 0.119 26.555);
+  --color-primary: #3490dc;
+  --color-transparent: transparent;
+}

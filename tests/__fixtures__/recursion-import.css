@@ -1,0 +1,5 @@
+@import "./recursion-import.css";
+
+@theme {
+  --color-recursive: #ff0000;
+}

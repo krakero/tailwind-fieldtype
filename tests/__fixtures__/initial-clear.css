@@ -1,0 +1,9 @@
+@theme {
+  --color-red-500: #ff0000;
+  --color-blue-500: #0000ff;
+  --color-*: initial;
+  --color-green-500: #00ff00;
+  --color-red-600: #cc0000;
+  --color-red-*: initial;
+  --color-yellow-500: #ffff00;
+}

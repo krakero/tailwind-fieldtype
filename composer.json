@@ -1,5 +1,12 @@
 {
     "name": "krakero/tailwind-fieldtype",
+    "description": "A Tailwind CSS color picker fieldtype for Statamic",
+    "license": "MIT",
+    "keywords": ["statamic", "tailwind", "fieldtype", "color-picker"],
+    "support": {
+        "issues": "https://github.com/krakero/tailwind-fieldtype/issues",
+        "source": "https://github.com/krakero/tailwind-fieldtype"
+    },
     "autoload": {
         "psr-4": {
             "Krakero\\TailwindFieldtype\\": "src"
@@ -17,11 +24,24 @@
         }
     },
     "require": {
-        "statamic/cms": "^4.0|^5.0"
+        "php": "^8.3",
+        "statamic/cms": "^6.0"
+    },
+    "require-dev": {
+        "pestphp/pest": "^4.7",
+        "orchestra/testbench": "^10.8 || ^11.0"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Krakero\\TailwindFieldtype\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "pest"
     },
     "config": {
         "allow-plugins": {
-            "pixelfear/composer-dist-plugin": true
+            "pestphp/pest-plugin": true
         }
     }
 }

@@ -1,0 +1,15 @@
+@theme {
+  --color-base: #000;
+}
+
+@theme inline {
+  --color-inline: #111;
+}
+
+@theme static {
+  --color-static: #222;
+}
+
+@theme default {
+  --color-default: #333;
+}

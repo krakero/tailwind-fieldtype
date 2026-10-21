@@ -2,10 +2,9 @@
 
 namespace Krakero\TailwindFieldtype;
 
-use Krakero\TailwindFieldtype\Console\Commands\TailwindConfigGenerator;
+use Krakero\TailwindFieldtype\Colors\ColorRepository;
+use Krakero\TailwindFieldtype\Console\Commands\ShowColorsCommand;
 use Krakero\TailwindFieldtype\Fieldtypes\TailwindPicker;
-use Statamic\Facades\CP\Toast;
-use Statamic\Facades\File;
 use Statamic\Providers\AddonServiceProvider;
 
 class ServiceProvider extends AddonServiceProvider
@@ -19,12 +18,22 @@ class ServiceProvider extends AddonServiceProvider
         'hotFile' => __DIR__ . '/../resources/dist/hot',
     ];
 
+    public function register()
+    {
+        parent::register();
+
+        // Bind ColorRepository as scoped (per-request, Octane-safe)
+        $this->app->scoped(ColorRepository::class, function ($app) {
+            return new ColorRepository();
+        });
+    }
+
     public function bootAddon()
     {
         TailwindPicker::register();
 
         $this->commands([
-            TailwindConfigGenerator::class,
+            ShowColorsCommand::class,
         ]);
     }
 }

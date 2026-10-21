@@ -2,31 +2,26 @@
 
 namespace Krakero\TailwindFieldtype\Fieldtypes;
 
+use Krakero\TailwindFieldtype\Colors\ColorRepository;
 use Statamic\Fields\Fieldtype;
-use Illuminate\Support\Facades\File;
 
 class TailwindPicker extends Fieldtype
 {
-    protected $color_names;
-    protected $colors;
-    protected $missing_file;
-    protected $tailwind_colors;
-    protected $tailwind_config;
+    protected static $handle = 'tailwind_picker';
 
-    public function __construct()
+    protected $icon = 'color';
+
+    /**
+     * Get the color repository instance.
+     * Lazy-loaded from container to avoid constructor side effects.
+     */
+    protected function colorRepository(): ColorRepository
     {
-        $this->loadTailwindConfig();
-        if ($this->tailwind_config) {
-            $this->setTailwindColors();
-            $this->setColorMap();
-            $this->color_names = collect($this->tailwind_colors)->keys()->toArray();
-        }
+        return app(ColorRepository::class);
     }
 
     /**
      * The blank/default value.
-     *
-     * @return array
      */
     public function defaultValue()
     {
@@ -35,9 +30,6 @@ class TailwindPicker extends Fieldtype
 
     /**
      * Pre-process the data before it gets sent to the publish page.
-     *
-     * @param  mixed  $data
-     * @return array|mixed
      */
     public function preProcess($data)
     {
@@ -46,26 +38,37 @@ class TailwindPicker extends Fieldtype
 
     /**
      * Process the data before it gets saved.
-     *
-     * @param  mixed  $data
-     * @return array|mixed
      */
     public function process($data)
     {
         return $data;
     }
 
+    /**
+     * Preload data for the Vue component.
+     * Returns: {colors, sources, warnings}
+     */
     public function preload(): array
     {
+        $repository = $this->colorRepository();
+        $colors = $repository->all();
+        $sources = $repository->sources();
+        $warnings = $repository->warnings();
+
         return [
-            'colors' => $this->colors,
-            'missing_file' => $this->missing_file,
+            'colors' => $colors,
+            'sources' => array_map(fn($path) => str_replace(base_path() . '/', '', $path), $sources),
+            'warnings' => $warnings,
         ];
     }
 
-
+    /**
+     * Config field items for the blueprint editor.
+     */
     protected function configFieldItems(): array
     {
+        $colorNames = $this->colorRepository()->names();
+
         return [
             'available_colors' => [
                 'display' => 'Available Colors',
@@ -73,7 +76,7 @@ class TailwindPicker extends Fieldtype
                 'placeholder' => 'Select Colors',
                 'type' => 'select',
                 'multiple' => true,
-                'options' => $this->color_names,
+                'options' => $colorNames,
             ],
             'mode' => [
                 'type' => 'button_group',
@@ -96,33 +99,10 @@ class TailwindPicker extends Fieldtype
             'class_prefix' => [
                 'type' => 'text',
                 'display' => 'Prefix',
-                'instructions' => 'Add a prefix to the color value before saving. (e.g. `bg` or `text`) to get `bg-red-500`',
+                'instructions' => 'Add a prefix to the color value before saving. (e.g. `bg` or `text` or `border-t`) to get `bg-red-500`',
                 'placeholder' => 'bg',
                 'default' => '',
             ],
         ];
-    }
-
-    protected function setTailwindColors()
-    {
-        $this->tailwind_colors = $this->tailwind_config->theme->colors;
-    }
-
-    private function loadTailwindConfig()
-    {
-        if (File::exists(base_path('tailwind.config.php'))) {
-            $this->tailwind_config = require base_path('tailwind.config.php');
-            $this->missing_file = false;
-        } else {
-            $this->tailwind_config = false;
-            $this->missing_file = true;
-        }
-    }
-
-    protected function setColorMap()
-    {
-        $this->colors = collect($this->tailwind_colors)->map(function ($color, $name) {
-            return collect($color)->toArray();
-        });
     }
 }

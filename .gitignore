@@ -1,5 +1,5 @@
 node_modules
 vendor
-mix-manifest.json
-tailwind.config.php
 resources/dist/hot
+composer.lock
+.phpunit.cache

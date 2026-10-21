@@ -1,0 +1,8 @@
+@theme {
+  /* This is a comment */
+  --color-red-500: #ff0000; /* inline comment */
+  /*
+   * Multi-line comment
+   */
+  --color-blue-500: #0000ff;
+}

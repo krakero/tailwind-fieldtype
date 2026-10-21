@@ -1,0 +1,5 @@
+<?php
+
+use Krakero\TailwindFieldtype\Tests\TestCase;
+
+uses(TestCase::class)->in(__DIR__);

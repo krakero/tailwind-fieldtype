@@ -1,0 +1,12 @@
+@theme {
+  --color-gradient: linear-gradient(
+    to bottom,
+    #fff,
+    #000
+  );
+  --color-complex: oklch(
+    0.5
+    0.2
+    240
+  );
+}

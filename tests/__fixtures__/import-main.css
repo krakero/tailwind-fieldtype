@@ -1,0 +1,7 @@
+@import "./import-colors.css";
+@import "./import-colors.css" layer(theme);
+@import url("./import-more.css");
+
+@theme {
+  --color-primary: #3490dc;
+}

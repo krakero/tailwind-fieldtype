@@ -1,0 +1,5 @@
+@theme {
+  --color-primary: #3490dc;
+  --color-primary-dark: var(--color-primary);
+  --color-link: var(--color-primary);
+}
